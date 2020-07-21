@@ -1,48 +1,66 @@
+
 public class Main {
 
-    public static float calculate(float a, float b, float c, float d){
-        return a*(b+(c/d));
+    /**
+     * Пытаемся преобразовать строку в Int
+     * @param text
+     * @return
+     */
+    public static Object tryParse(String text) {
+        try {
+            return Integer.parseInt(text);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
-    public static boolean compare(int a, int b){
-        return ((a+b>=10) && (a+b<=20));
+    /**
+     * Проверка массива на превышение длины
+     * @param arr
+     * @return True, если массив содержит элемент некорректной длины
+     */
+    public static boolean checkArrayLength(String[][] arr){
+        int arrayMaxLength = 4;
+        if (arr.length > arrayMaxLength){
+           return false;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].length > arrayMaxLength) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public static String isPositiveOrNegative(int a){
-        return a<0 ? "Отрицательное" : "Положительное";
-    }
+    public static void generateArrayException(String[][] arr) {
+        try {
+            if (!checkArrayLength(arr)) {
+                throw new ArraySizeException();
+            }
 
-    public static boolean isNegative(int a){
-        return a < 0;
-    }
-
-    public static String Hello(String a){
-        return "Привет, " + a + "!";
-    }
-
-    public static boolean isYearVis(int year){
-        return (year % 4 == 0 || year % 400 == 0) && (year % 100 != 0);
-    }
-
-    public static void main (String[] args){
-        byte varByte;
-        short varShort;
-        int varInt;
-        long varLong;
-        float varFloat;
-        double varDouble;
-        char varChar;
-        boolean varBoolean;
-
-
-        System.out.println("calculate = "+ calculate(1,2,3,4));
-        System.out.println("compare = "+ compare(5,100));
-        System.out.println("isPositiveOrNegative = "+ isPositiveOrNegative(0));
-        System.out.println("isNegative = "+ isNegative(-4));
-        System.out.println("Hello = "+ Hello("Петя"));
-        int year = 1897;
-        System.out.println("isYearVis("+year+") = "+ isYearVis(year));
+            int arrSum = 0;
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 4; j++) {
+                    Object val = tryParse(arr[i][j]);
+                    if (val == null) {
+                        throw new ArrayDataException(i, j);
+                    }
+                    arrSum += (int) val;
+                }
+            }
+            System.out.println("Сумма элементов = " + arrSum);
+        } catch (ArrayDataException | ArraySizeException ex) {
+            System.out.println(ex.getExceptionMessage());
+        }
 
     }
+
+    public static void main(String[] args) {
+        String[][] arr = new String[][]{{"1", "1", "1", "1"}, {"1", "1", "1", "1"}, {"1", "1", "1", "1"}, {"1", "1", "1", "1"}};
+        generateArrayException(arr);
+
+    }
+
 }
 
